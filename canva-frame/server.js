@@ -24,7 +24,7 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 },
 });
 
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.post("/uret", upload.single("resim"), async (req, res) => {
   if (!req.file)
