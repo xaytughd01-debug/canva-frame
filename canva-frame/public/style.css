@@ -1,0 +1,275 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  background: #0f172a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #f8fafc;
+}
+
+.container {
+  background: #1e293b;
+  padding: 48px 40px;
+  border-radius: 16px;
+  box-shadow:
+    0 20px 25px -5px rgb(0 0 0 / 0.5),
+    0 8px 10px -6px rgb(0 0 0 / 0.5);
+  text-align: center;
+  width: 100%;
+  max-width: 440px;
+  border: 1px solid #334155;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  margin-bottom: 8px;
+  color: #f1f5f9;
+}
+
+.subtitle {
+  color: #94a3b8;
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+
+.drop-zone {
+  border: 2px dashed #475569;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  margin-bottom: 16px;
+  background: #1e293b;
+  overflow: hidden; /* Taşmaları engelle */
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.drop-zone:hover,
+.drop-zone.dragover {
+  background: #334155;
+  border-color: #64748b;
+}
+
+.drop-content {
+  padding: 48px 24px;
+  width: 100%;
+  pointer-events: none; /* Mouse olaylarını engelle ki altındaki input çalışsın */
+}
+
+.drop-zone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  z-index: 10; /* Her şeyin üstünde olsun */
+}
+
+.drop-icon {
+  color: #94a3b8;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.drop-icon svg {
+  width: 40px;
+  height: 40px;
+  stroke-width: 1.2;
+}
+
+.drop-label {
+  color: #cbd5e1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.drop-hint {
+  color: #64748b;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+/* --- YENİ EKLENEN ÖNİZLEME STİLLERİ --- */
+.preview-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1e293b;
+}
+
+.preview-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7); /* Koyu yarı saydam katman */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none; /* Mouse input'a tıklayabilsin diye */
+  backdrop-filter: blur(2px);
+}
+
+.preview-overlay span {
+  color: #f8fafc;
+  font-weight: 500;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Mouse hover olduğunda overlay'i göster */
+.drop-zone:hover .preview-container:not(.hidden) .preview-overlay {
+  opacity: 1;
+}
+/* ------------------------------------- */
+
+.file-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #f8fafc;
+  font-weight: 500;
+  min-height: 24px;
+  margin-bottom: 24px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.file-info.visible {
+  opacity: 1;
+}
+
+.file-info svg {
+  width: 18px;
+  height: 18px;
+  color: #10b981;
+}
+
+button {
+  background: #f8fafc;
+  color: #0f172a;
+  border: none;
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+button:hover:not(:disabled) {
+  background: #e2e8f0;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+button:disabled {
+  background: #334155;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.hata {
+  margin-top: 20px;
+  color: #fca5a5;
+  font-size: 13px;
+  background: rgba(127, 29, 29, 0.2);
+  border: 1px solid #7f1d1d;
+  border-radius: 8px;
+  padding: 12px;
+  display: none;
+  align-items: flex-start;
+  text-align: left;
+  gap: 10px;
+}
+
+.hata svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* --- İMZA TASARIMI --- */
+.signature {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.signature:hover {
+  color: #94a3b8;
+}
+
+.signature svg {
+  width: 16px;
+  height: 16px;
+}
+
+.signature span {
+  color: #e2e8f0;
+  font-weight: 600;
+}
